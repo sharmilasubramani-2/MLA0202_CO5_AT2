@@ -1,0 +1,20 @@
+SHARMILA S (192525011)
+
+Function TemporalDifferenceLearning(NumEpisodes, Alpha, Gamma)
+    Initialize StateValues hash map or array with 0.0
+    For episode = 1 To NumEpisodes Do
+        Initialize CurrentState to GetInitialState()
+        While CurrentState is not Terminal Do
+            Select Action using Policy
+            Execute Action, Observe Reward and NextState
+            If NextState is Terminal Then
+                Target = Reward
+            Else
+                Target = Reward + Gamma * StateValues[NextState]
+            End If
+            StateValues[CurrentState] = StateValues[CurrentState] + Alpha * (Target - StateValues[CurrentState])
+            CurrentState = NextState
+        End While
+    End For
+    Display StateValues
+End Function
