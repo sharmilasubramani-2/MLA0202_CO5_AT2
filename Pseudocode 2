@@ -1,0 +1,20 @@
+SHARMILA S (192525011)
+
+Function EpsilonGreedyBandit(K, NumSteps, Epsilon)
+    Initialize ActionCounts array of size K with 0
+    Initialize ValueEstimates array of size K with 0.0
+    For t = 1 To NumSteps Do
+        Generate RandomValue from UniformDistribution(0, 1)
+        If RandomValue < Epsilon Then
+            Select RandomAction from 0 To K - 1
+        Else
+            Select ChosenAction as Index with Maximum ValueEstimates
+        End If
+        Receive Reward for ChosenAction
+        ActionCounts[ChosenAction] = ActionCounts[ChosenAction] + 1
+        Alpha = 1 / ActionCounts[ChosenAction]
+        ValueEstimates[ChosenAction] = ValueEstimates[ChosenAction] + Alpha * (Reward - ValueEstimates[ChosenAction])
+    End For
+    Find BestMovie as Index with Maximum ValueEstimates
+    Display BestMovie
+End Function
