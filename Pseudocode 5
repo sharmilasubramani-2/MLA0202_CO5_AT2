@@ -1,0 +1,43 @@
+SHARMILA S (192525011)
+
+Function PolicyIteration(States, Actions, TransitionModel, RewardModel, Gamma, Theta)
+    Initialize Policy for all states in States with Random Action
+    Initialize ValueFunction for all states in States with 0.0
+    Set PolicyStable to False
+    While PolicyStable is False Do
+        Repeat
+            Set Delta to 0
+            For Each State in States Do
+                Set OldValue to ValueFunction[State]
+                Set Action to Policy[State]
+                Set Sum to 0
+                For Each NextState in States Do
+                    Sum = Sum + TransitionModel(State, Action, NextState) * (RewardModel(State, Action, NextState) + Gamma * ValueFunction[NextState])
+                End For
+                ValueFunction[State] = Sum
+                Delta = Maximum(Delta, Absolute(OldValue - ValueFunction[State]))
+            End For
+        Until Delta < Theta
+        Set PolicyStable = True
+        For Each State in States Do
+            Set OldAction to Policy[State]
+            Initialize BestAction to OldAction
+            Initialize MaxValue to NegativeInfinity
+            For Each Action in Actions Do
+                Set ActionValue to 0
+                For Each NextState in States Do
+                    ActionValue = ActionValue + TransitionModel(State, Action, NextState) * (RewardModel(State, Action, NextState) + Gamma * ValueFunction[NextState])
+                End For
+                If ActionValue > MaxValue Then
+                    MaxValue = ActionValue
+                    BestAction = Action
+                End If
+            End For
+            Policy[State] = BestAction
+            If OldAction != BestAction Then
+                PolicyStable = False
+            End If
+        End For
+    End While
+    Display Policy
+End Function
