@@ -1,0 +1,43 @@
+SHARMILA S (192525011)
+
+Function ValueIteration(States, Actions, TransitionModel, RewardModel, Gamma, Theta)
+    Initialize ValueFunction for all states in States with 0.0
+    Initialize Policy for all states in States with Null
+    Repeat
+        Set Delta to 0
+        For Each State in States Do
+            If State is Terminal Then
+                Continue
+            End If
+            Set OldValue to ValueFunction[State]
+            Initialize MaxValue to NegativeInfinity
+            For Each Action in Actions Do
+                Set ActionValue to 0
+                For Each NextState in States Do
+                    ActionValue = ActionValue + TransitionModel(State, Action, NextState) * (RewardModel(State, Action, NextState) + Gamma * ValueFunction[NextState])
+                End For
+                If ActionValue > MaxValue Then
+                    MaxValue = ActionValue
+                End If
+            End For
+            ValueFunction[State] = MaxValue
+            Delta = Maximum(Delta, Absolute(OldValue - ValueFunction[State]))
+        End For
+    Until Delta < Theta
+    For Each State in States Do
+        Initialize BestAction to Null
+        Initialize MaxActionValue to NegativeInfinity
+        For Each Action in Actions Do
+            Set CurrentActionValue to 0
+            For Each NextState in States Do
+                CurrentActionValue = CurrentActionValue + TransitionModel(State, Action, NextState) * (RewardModel(State, Action, NextState) + Gamma * ValueFunction[NextState])
+            End For
+            If CurrentActionValue > MaxActionValue Then
+                MaxActionValue = CurrentActionValue
+                BestAction = Action
+            End If
+        End For
+        Policy[State] = BestAction
+    End For
+    Display ValueFunction, Policy
+End Function
