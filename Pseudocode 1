@@ -1,20 +1,16 @@
 SHARMILA S (192525011)
 
-Function EpsilonGreedyBandit(K, NumSteps, Epsilon)
-    Initialize ActionCounts array of size K with 0
-    Initialize ValueEstimates array of size K with 0.0
-    For t = 1 To NumSteps Do
-        Generate RandomValue from UniformDistribution(0, 1)
-        If RandomValue < Epsilon Then
-            Select RandomAction from 0 To K - 1
+Function MonteCarloDeliveryEstimation(NumSimulations, TrafficThreshold)
+    Initialize OnTimeCount to 0
+    For i = 1 To NumSimulations Do
+        Generate RandomSample from UniformDistribution(0, 1)
+        If RandomSample <= TrafficThreshold Then
+            Set DeliveryStatus to 1
+            OnTimeCount = OnTimeCount + 1
         Else
-            Select ChosenAction as Index with Maximum ValueEstimates
+            Set DeliveryStatus to 0
         End If
-        Receive Reward for ChosenAction
-        ActionCounts[ChosenAction] = ActionCounts[ChosenAction] + 1
-        Alpha = 1 / ActionCounts[ChosenAction]
-        ValueEstimates[ChosenAction] = ValueEstimates[ChosenAction] + Alpha * (Reward - ValueEstimates[ChosenAction])
     End For
-    Find BestMovie as Index with Maximum ValueEstimates
-    Display BestMovie
+    Set EstimatedProbability to OnTimeCount / NumSimulations
+    Display EstimatedProbability
 End Function
